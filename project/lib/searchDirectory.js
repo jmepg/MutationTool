@@ -7,11 +7,16 @@ const BACKGROUND_MUTANT = '\n outState.clear();';
 
 function selectFiles(dir, mutant) {
     //Diferent file selection given diferent mutant
-
-    let dirFiles = searchDirectory(dir);
-    let found = searchValidFiles(dirFiles.files, mutant);
+    //let dirFiles = searchDirectory(dir);
+    let allFiles = findAllFiles(dir);
+    let found = searchValidFiles(allFiles, mutant);
     return found;
 
+}
+
+function findAllFiles(dir) {
+    var paths = Finder.from(dir).findFiles();
+    return paths;
 }
 
 function searchDirectory(dir) {
@@ -68,5 +73,6 @@ module.exports.BACKGROUND_MUTANT = BACKGROUND_MUTANT;
 
 module.exports.searchDirectory = searchDirectory;
 module.exports.selectFiles = selectFiles;
+module.exports.findAllFiles = findAllFiles;
 
 // D:\Estrada\MIEIC\Tese\test
