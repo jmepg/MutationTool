@@ -18,7 +18,13 @@ console.log(
 const run = () => {
     inquirer.askDirectory()
         .then(directoryPath => {
-            logic.logic(directoryPath.directory);
+            // logic.logic(directoryPath.directory);
+            let lastFolder = directoryPath.directory.substr(directoryPath.directory.lastIndexOf('\\') + 1);
+            let appFolderNames = directoryPath.directory.split('\\');
+            console.log(appFolderNames[appFolderNames.length - 4]);
+            let destinationTemp = 'D:\\Estrada\\MIEIC\\Tese\\MutationTool\\project\\output\\' + lastFolder;
+            console.log(destinationTemp)
+
         })
 
 

@@ -8,6 +8,11 @@ var fileSelectedNo = 0;
 
 function logic(directoryPath) {
 
+    if (!searchDirectory.isPathValid(directoryPath)) {
+        console.log("Invalid path! The app folder must be inside the path of the directory given!")
+        return -1;
+    }
+
     if (!mutantValidation(directoryPath))
         return 0;
 

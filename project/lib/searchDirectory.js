@@ -65,7 +65,17 @@ function searchBackgroundValidFiles(file) {
 
 }
 
-function isPathValid() {};
+function isPathValid(path) {
+    let filesPath = Finder.in(path).findFiles();
+    for (let i = 0; i < filesPath.length; i++) {
+        filesName = filesPath[i].split('\\');
+        if (filesName[filesName.length - 1] == 'AndroidManifest.xml')
+            return true;
+    }
+
+    return false;
+
+};
 
 
 module.exports.BACKGROUND_EXPRESSION = BACKGROUND_EXPRESSION;
@@ -74,5 +84,7 @@ module.exports.BACKGROUND_MUTANT = BACKGROUND_MUTANT;
 module.exports.searchDirectory = searchDirectory;
 module.exports.selectFiles = selectFiles;
 module.exports.findAllFiles = findAllFiles;
+module.exports.isPathValid = isPathValid;
 
 // D:\Estrada\MIEIC\Tese\test
+// D:\Estrada\MIEIC\Tese\Apps\AmazeFileManager\app\src\main
