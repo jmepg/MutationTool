@@ -13,17 +13,16 @@ function logic(directoryPath) {
         return -1;
     }
 
-    if (!mutantValidation(directoryPath))
-        return 0;
+    if (mutantValidation(directoryPath, 'background_outstate')) {
 
-    while (true) {
-        if (!createMutation(directoryPath))
-            break;
+        while (true) {
+            if (!createMutation(directoryPath, 'background_outstate'))
+                break;
+        }
     }
-
 }
 
-function createMutation(directoryPath) {
+function createMutation(directoryPath, mutant) {
     filesJS.copyDirectory(directoryPath, ++mutantNo);
 
 
@@ -34,7 +33,7 @@ function createMutation(directoryPath) {
 
     let newDirectory = 'D:\\Estrada\\MIEIC\\Tese\\MutationTool\\project\\output\\' + appFolderName + '\\mutant' + mutantNo;
 
-    let selectedFiles = searchDirectory.selectFiles(newDirectory, 'background');
+    let selectedFiles = searchDirectory.selectFiles(newDirectory, mutant);
 
     console.log(selectedFiles[fileSelectedNo]);
     filesJS.insertMutant(selectedFiles[fileSelectedNo], searchDirectory.BACKGROUND_EXPRESSION, searchDirectory.BACKGROUND_EXPRESSION + searchDirectory.BACKGROUND_MUTANT);
@@ -47,8 +46,8 @@ function createMutation(directoryPath) {
 }
 
 
-function mutantValidation(directoryPath) {
-    let selectedFiles = searchDirectory.selectFiles(directoryPath, 'background');
+function mutantValidation(directoryPath, mutant) {
+    let selectedFiles = searchDirectory.selectFiles(directoryPath, mutant);
 
     if (selectedFiles.length > 0) {
         filesJS.copyDirectory(directoryPath, filesJS.ORIGINAL);

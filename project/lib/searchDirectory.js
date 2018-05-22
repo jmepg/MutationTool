@@ -7,7 +7,6 @@ const BACKGROUND_MUTANT = '\n outState.clear();';
 
 function selectFiles(dir, mutant) {
     //Diferent file selection given diferent mutant
-    //let dirFiles = searchDirectory(dir);
     let allFiles = findAllFiles(dir);
     let found = searchValidFiles(allFiles, mutant);
     return found;
@@ -31,7 +30,7 @@ function searchValidFiles(files, mutant) {
     let validFiles = [];
     for (let i = 0; i < files.length; i++) {
         switch (mutant) {
-            case 'background':
+            case 'background_outstate':
                 if (searchBackgroundValidFiles(files[i])) {
                     validFiles.push(files[i]);
                 }
@@ -87,4 +86,4 @@ module.exports.findAllFiles = findAllFiles;
 module.exports.isPathValid = isPathValid;
 
 // D:\Estrada\MIEIC\Tese\test
-// D:\Estrada\MIEIC\Tese\Apps\chromadoze\app\src\main
+// D:\Estrada\MIEIC\Tese\Apps\AntennaPod\app\src\main
