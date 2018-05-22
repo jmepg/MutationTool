@@ -67,10 +67,32 @@ function searchInFile(file, expression) {
 
 }
 
+function searchInFileRegex(file, regex) {
+    const data = fs.readFileSync(file).toString();
+
+    let match = regex.exec(data);
+    if (match !== null) {
+        return true;
+    }
+    return false;
+}
+
+function searchDeclarationInFile(file, regex) {
+    const data = fs.readFileSync(file).toString();
+
+    let match = regex.exec(data);
+    if (match !== null) {
+        return match;
+    }
+    return false;
+}
+
 module.exports.ORIGINAL = ORIGINAL;
 
 module.exports.copyDirectory = copyDirectory;
 module.exports.getCurrentDirectoryBase = getCurrentDirectoryBase;
 module.exports.directoryExists = directoryExists;
 module.exports.searchInFile = searchInFile;
+module.exports.searchInFileRegex = searchInFileRegex;
 module.exports.insertMutant = insertMutant;
+module.exports.searchDeclarationInFile = searchDeclarationInFile;

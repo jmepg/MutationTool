@@ -14,9 +14,15 @@ function logic(directoryPath) {
     }
 
     if (mutantValidation(directoryPath, 'background_outstate')) {
-
         while (true) {
             if (!createMutation(directoryPath, 'background_outstate'))
+                break;
+        }
+    }
+
+    if (mutantValidation(directoryPath, 'background_editText')) {
+        while (true) {
+            if (!createMutation(directoryPath, 'background_editText'))
                 break;
         }
     }
@@ -36,7 +42,24 @@ function createMutation(directoryPath, mutant) {
     let selectedFiles = searchDirectory.selectFiles(newDirectory, mutant);
 
     console.log(selectedFiles[fileSelectedNo]);
-    filesJS.insertMutant(selectedFiles[fileSelectedNo], searchDirectory.BACKGROUND_EXPRESSION, searchDirectory.BACKGROUND_EXPRESSION + searchDirectory.BACKGROUND_MUTANT);
+
+
+    switch (mutant) {
+        case 'background_outstate':
+            filesJS.insertMutant(selectedFiles[fileSelectedNo], searchDirectory.BACKGROUND_OUTSTATE_EXPRESSION, searchDirectory.BACKGROUND_OUTSTATE_EXPRESSION + searchDirectory.BACKGROUND_OUTSTATE_MUTANT);
+            break;
+        case 'background_editText':
+            let match = filesJS.searchDeclarationInFile(selectedFiles[fileSelectedNo], searchDirectory.BACKGROUND_EDITTEXT_REGEX);
+            let finalMutant = match[0] + ' \n ' + match[2] + searchDirectory.BACKGROUND_EDITTEXT_MUTANT;
+
+            filesJS.insertMutant(selectedFiles[fileSelectedNo], match[0], finalMutant);
+            break;
+
+        default:
+            break;
+
+
+    }
 
     if (selectedFiles.length === ++fileSelectedNo) {
         fileSelectedNo = 0;
@@ -53,7 +76,7 @@ function mutantValidation(directoryPath, mutant) {
         filesJS.copyDirectory(directoryPath, filesJS.ORIGINAL);
         return true;
     } else {
-        console.log('Not possible to insert mutant');
+        console.log('Not possible to insert ' + mutant + ' mutants');
         return false;
     }
 }

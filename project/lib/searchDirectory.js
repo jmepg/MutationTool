@@ -2,8 +2,11 @@ const Finder = require('fs-finder');
 const filesJS = require('./files');
 
 
-const BACKGROUND_EXPRESSION = 'super.onSaveInstanceState(outState);';
-const BACKGROUND_MUTANT = '\n outState.clear();';
+const BACKGROUND_OUTSTATE_EXPRESSION = 'super.onSaveInstanceState(outState);';
+const BACKGROUND_OUTSTATE_MUTANT = '\n outState.clear();';
+
+const BACKGROUND_EDITTEXT_REGEX = /(EditText)?\s*([A-Za-z\d]+)\s*=\s*\(EditText\)findViewById\(([A-Za-z\d.]+)\);/;
+const BACKGROUND_EDITTEXT_MUTANT = '.setSaveEnable(false); \n'
 
 function selectFiles(dir, mutant) {
     //Diferent file selection given diferent mutant
@@ -29,36 +32,43 @@ function searchValidFiles(files, mutant) {
 
     let validFiles = [];
     for (let i = 0; i < files.length; i++) {
-        switch (mutant) {
-            case 'background_outstate':
-                if (searchBackgroundValidFiles(files[i])) {
-                    validFiles.push(files[i]);
-                }
-                break;
 
-            default:
-                break;
+        if (searchBackgroundValidFiles(files[i], mutant)) {
+            validFiles.push(files[i]);
         }
-
     }
 
     return validFiles;
 
 }
 
-function searchBackgroundValidFiles(file) {
+function searchBackgroundValidFiles(file, mutant) {
     let extension = file.substr(file.lastIndexOf('.') + 1);
     if (extension !== "java") {
         return false;
     }
+    let result = null;
 
-    const result = filesJS.searchInFile(file, BACKGROUND_EXPRESSION);
-    if (result) {
-        return true;
-    } else {
-        return false;
+    switch (mutant) {
+        case 'background_outstate':
+            result = filesJS.searchInFile(file, BACKGROUND_OUTSTATE_EXPRESSION);
+            if (result) {
+                return true;
+            } else {
+                return false;
+            }
+            break;
+        case 'background_editText':
+            result = filesJS.searchInFileRegex(file, BACKGROUND_EDITTEXT_REGEX);
+            if (result) {
+                return true;
+            } else {
+                return false;
+            }
+            break;
+        default:
+            break;
     }
-
 
     return false;
 
@@ -77,8 +87,10 @@ function isPathValid(path) {
 };
 
 
-module.exports.BACKGROUND_EXPRESSION = BACKGROUND_EXPRESSION;
-module.exports.BACKGROUND_MUTANT = BACKGROUND_MUTANT;
+module.exports.BACKGROUND_OUTSTATE_EXPRESSION = BACKGROUND_OUTSTATE_EXPRESSION;
+module.exports.BACKGROUND_OUTSTATE_MUTANT = BACKGROUND_OUTSTATE_MUTANT;
+module.exports.BACKGROUND_EDITTEXT_REGEX = BACKGROUND_EDITTEXT_REGEX;
+module.exports.BACKGROUND_EDITTEXT_MUTANT = BACKGROUND_EDITTEXT_MUTANT;
 
 module.exports.searchDirectory = searchDirectory;
 module.exports.selectFiles = selectFiles;
@@ -86,4 +98,4 @@ module.exports.findAllFiles = findAllFiles;
 module.exports.isPathValid = isPathValid;
 
 // D:\Estrada\MIEIC\Tese\test
-// D:\Estrada\MIEIC\Tese\Apps\AntennaPod\app\src\main
+// D:\Estrada\MIEIC\Tese\Apps\Forkhub\app\src\main
