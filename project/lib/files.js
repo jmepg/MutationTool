@@ -28,20 +28,23 @@ function copyDirectory(source, mutantNo) {
     else mutantNo = 'mutant' + mutantNo;
 
 
-    let lastFolder = source.substr(source.lastIndexOf('\\') + 1);
-
-    let destinationTemp = 'D:\\Estrada\\MIEIC\\Tese\\MutationTool\\project\\output\\' + lastFolder;
-
-    let destination = 'D:\\Estrada\\MIEIC\\Tese\\MutationTool\\project\\output\\' + lastFolder + '\\' + mutantNo;
+    let _appFolderNames = source.split('\\');
+    let appFolderName = _appFolderNames[_appFolderNames.length - 4];
 
 
-    if (!fs.existsSync(destinationTemp)) {
-        fs.mkdirSync(destinationTemp);
+    let _destination = 'D:\\Estrada\\MIEIC\\Tese\\MutationTool\\project\\output\\' + appFolderName;
+
+    let destination = 'D:\\Estrada\\MIEIC\\Tese\\MutationTool\\project\\output\\' + appFolderName + '\\' + mutantNo;
+
+
+    if (!fs.existsSync(_destination)) {
+        fs.mkdirSync(_destination);
     }
 
     if (!fs.existsSync(destination)) {
         fs.mkdirSync(destination);
     }
+
 
     fs.copySync(source, destination);
 }

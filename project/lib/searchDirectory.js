@@ -87,4 +87,4 @@ module.exports.findAllFiles = findAllFiles;
 module.exports.isPathValid = isPathValid;
 
 // D:\Estrada\MIEIC\Tese\test
-// D:\Estrada\MIEIC\Tese\Apps\AmazeFileManager\app\src\main
+// D:\Estrada\MIEIC\Tese\Apps\chromadoze\app\src\main

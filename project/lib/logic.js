@@ -26,8 +26,13 @@ function logic(directoryPath) {
 function createMutation(directoryPath) {
     filesJS.copyDirectory(directoryPath, ++mutantNo);
 
-    let lastFolder = directoryPath.substr(directoryPath.lastIndexOf('\\') + 1);
-    let newDirectory = 'D:\\Estrada\\MIEIC\\Tese\\MutationTool\\project\\output\\' + lastFolder + '\\mutant' + mutantNo;
+
+
+    let _appFolderNames = directoryPath.split('\\');
+    let appFolderName = _appFolderNames[_appFolderNames.length - 4];
+
+
+    let newDirectory = 'D:\\Estrada\\MIEIC\\Tese\\MutationTool\\project\\output\\' + appFolderName + '\\mutant' + mutantNo;
 
     let selectedFiles = searchDirectory.selectFiles(newDirectory, 'background');
 
