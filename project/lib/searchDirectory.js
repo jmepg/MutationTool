@@ -6,7 +6,11 @@ const BACKGROUND_OUTSTATE_EXPRESSION = 'super.onSaveInstanceState(outState);';
 const BACKGROUND_OUTSTATE_MUTANT = '\n outState.clear();';
 
 const BACKGROUND_EDITTEXT_REGEX = /(EditText)?\s*([A-Za-z\d]+)\s*=\s*\(EditText\)findViewById\(([A-Za-z\d.]+)\);/;
-const BACKGROUND_EDITTEXT_MUTANT = '.setSaveEnable(false); \n'
+const BACKGROUND_WIDGET_MUTANT = '.setSaveEnable(false); \n'
+
+const BACKGROUND_SPINNER_REGEX = /(Spinner)?\s*([A-Za-z\d]+)\s*=\s*\(Spinner\)findViewById\(([A-Za-z\d.]+)\);/;
+
+
 
 function selectFiles(dir, mutant) {
     //Diferent file selection given diferent mutant
@@ -50,7 +54,7 @@ function searchBackgroundValidFiles(file, mutant) {
     let result = null;
 
     switch (mutant) {
-        case 'background_outstate':
+        case 'background_outState':
             result = filesJS.searchInFile(file, BACKGROUND_OUTSTATE_EXPRESSION);
             if (result) {
                 return true;
@@ -66,6 +70,24 @@ function searchBackgroundValidFiles(file, mutant) {
                 return false;
             }
             break;
+
+        case 'background_spinner':
+            result = filesJS.searchInFileRegex(file, BACKGROUND_SPINNER_REGEX);
+            if (result) {
+                return true;
+            } else {
+                return false;
+            }
+            break;
+        case 'background_onPause':
+            /*result = filesJS.searchInFile(file, BACKGROUND_OUTSTATE_EXPRESSION);
+            if (result) {
+                return true;
+            } else {
+                return false;
+            }*/
+            break;
+
         default:
             break;
     }
@@ -90,12 +112,12 @@ function isPathValid(path) {
 module.exports.BACKGROUND_OUTSTATE_EXPRESSION = BACKGROUND_OUTSTATE_EXPRESSION;
 module.exports.BACKGROUND_OUTSTATE_MUTANT = BACKGROUND_OUTSTATE_MUTANT;
 module.exports.BACKGROUND_EDITTEXT_REGEX = BACKGROUND_EDITTEXT_REGEX;
-module.exports.BACKGROUND_EDITTEXT_MUTANT = BACKGROUND_EDITTEXT_MUTANT;
+module.exports.BACKGROUND_WIDGET_MUTANT = BACKGROUND_WIDGET_MUTANT;
+module.exports.BACKGROUND_SPINNER_REGEX = BACKGROUND_SPINNER_REGEX;
 
 module.exports.searchDirectory = searchDirectory;
 module.exports.selectFiles = selectFiles;
 module.exports.findAllFiles = findAllFiles;
 module.exports.isPathValid = isPathValid;
 
-// D:\Estrada\MIEIC\Tese\test
-// D:\Estrada\MIEIC\Tese\Apps\Forkhub\app\src\main
+// D:\Estrada\MIEIC\Tese\Apps\and-bible\and-bible\app\src\main

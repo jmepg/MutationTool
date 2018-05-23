@@ -13,19 +13,33 @@ function logic(directoryPath) {
         return -1;
     }
 
-    if (mutantValidation(directoryPath, 'background_outstate')) {
+    if (mutantValidation(directoryPath, 'background_outState')) {
+        console.log("\nbackground_outState mutants");
         while (true) {
-            if (!createMutation(directoryPath, 'background_outstate'))
+            if (!createMutation(directoryPath, 'background_outState'))
                 break;
         }
     }
 
     if (mutantValidation(directoryPath, 'background_editText')) {
+        console.log("\nbackground_editText mutants");
+
         while (true) {
             if (!createMutation(directoryPath, 'background_editText'))
                 break;
         }
     }
+
+    if (mutantValidation(directoryPath, 'background_spinner')) {
+        console.log("\nbackground_spinner mutants");
+
+        while (true) {
+            if (!createMutation(directoryPath, 'background_spinner'))
+                break;
+        }
+    }
+
+
 }
 
 function createMutation(directoryPath, mutant) {
@@ -41,20 +55,31 @@ function createMutation(directoryPath, mutant) {
 
     let selectedFiles = searchDirectory.selectFiles(newDirectory, mutant);
 
+    console.log("Mutant " + mutantNo);
     console.log(selectedFiles[fileSelectedNo]);
+
+    let match = [];
+    let finalMutant = '';
 
 
     switch (mutant) {
-        case 'background_outstate':
+        case 'background_outState':
             filesJS.insertMutant(selectedFiles[fileSelectedNo], searchDirectory.BACKGROUND_OUTSTATE_EXPRESSION, searchDirectory.BACKGROUND_OUTSTATE_EXPRESSION + searchDirectory.BACKGROUND_OUTSTATE_MUTANT);
             break;
         case 'background_editText':
-            let match = filesJS.searchDeclarationInFile(selectedFiles[fileSelectedNo], searchDirectory.BACKGROUND_EDITTEXT_REGEX);
-            let finalMutant = match[0] + ' \n ' + match[2] + searchDirectory.BACKGROUND_EDITTEXT_MUTANT;
+            match = filesJS.searchDeclarationInFile(selectedFiles[fileSelectedNo], searchDirectory.BACKGROUND_EDITTEXT_REGEX);
+            finalMutant = match[0] + ' \n ' + match[2] + searchDirectory.BACKGROUND_WIDGET_MUTANT;
 
             filesJS.insertMutant(selectedFiles[fileSelectedNo], match[0], finalMutant);
             break;
+        case 'background_spinner':
+            match = filesJS.searchDeclarationInFile(selectedFiles[fileSelectedNo], searchDirectory.BACKGROUND_SPINNER_REGEX);
+            finalMutant = match[0] + ' \n ' + match[2] + searchDirectory.BACKGROUND_WIDGET_MUTANT;
 
+            filesJS.insertMutant(selectedFiles[fileSelectedNo], match[0], finalMutant);
+            break;
+        case 'background_onPause':
+            break;
         default:
             break;
 
