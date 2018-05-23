@@ -39,6 +39,15 @@ function logic(directoryPath) {
         }
     }
 
+    if (mutantValidation(directoryPath, 'background_spinner')) {
+        console.log("\nbackground_spinner mutants");
+
+        while (true) {
+            if (!createMutation(directoryPath, 'background_spinner'))
+                break;
+        }
+    }
+
 
 }
 

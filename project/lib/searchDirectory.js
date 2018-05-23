@@ -7,8 +7,10 @@ const BACKGROUND_OUTSTATE_MUTANT = '\n outState.clear();';
 
 const BACKGROUND_EDITTEXT_REGEX = /(EditText)?\s*([A-Za-z\d]+)\s*=\s*\(EditText\)findViewById\(([A-Za-z\d.]+)\);/;
 const BACKGROUND_WIDGET_MUTANT = '.setSaveEnable(false); \n'
-
 const BACKGROUND_SPINNER_REGEX = /(Spinner)?\s*([A-Za-z\d]+)\s*=\s*\(Spinner\)findViewById\(([A-Za-z\d.]+)\);/;
+
+const BACKGROUND_ACTIVITY_CHECK_REGEX = /(extends)\s[A-Za-z]*(Activity)/;
+const BACKGROUND_ONPAUSE = 'onPause()';
 
 
 
@@ -80,14 +82,13 @@ function searchBackgroundValidFiles(file, mutant) {
             }
             break;
         case 'background_onPause':
-            /*result = filesJS.searchInFile(file, BACKGROUND_OUTSTATE_EXPRESSION);
+            result = filesJS.searchInFileRegex(file, BACKGROUND_ACTIVITY_CHECK_REGEX);
             if (result) {
                 return true;
             } else {
                 return false;
-            }*/
+            }
             break;
-
         default:
             break;
     }
