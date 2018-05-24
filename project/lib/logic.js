@@ -2,6 +2,7 @@
 
 const filesJS = require('./files.js');
 const searchDirectory = require('./searchDirectory');
+const constants = require('./constants');
 
 var mutantNo = 0;
 var fileSelectedNo = 0;
@@ -39,11 +40,12 @@ function logic(directoryPath) {
         }
     }
 
-    if (mutantValidation(directoryPath, 'background_spinner')) {
-        console.log("\nbackground_spinner mutants");
+
+    if (mutantValidation(directoryPath, 'background_onPause')) {
+        console.log("\nbackground_onPause mutants");
 
         while (true) {
-            if (!createMutation(directoryPath, 'background_spinner'))
+            if (!createMutation(directoryPath, 'background_onPause'))
                 break;
         }
     }
@@ -52,9 +54,8 @@ function logic(directoryPath) {
 }
 
 function createMutation(directoryPath, mutant) {
+
     filesJS.copyDirectory(directoryPath, ++mutantNo);
-
-
 
     let _appFolderNames = directoryPath.split('\\');
     let appFolderName = _appFolderNames[_appFolderNames.length - 4];
@@ -73,21 +74,32 @@ function createMutation(directoryPath, mutant) {
 
     switch (mutant) {
         case 'background_outState':
-            filesJS.insertMutant(selectedFiles[fileSelectedNo], searchDirectory.BACKGROUND_OUTSTATE_EXPRESSION, searchDirectory.BACKGROUND_OUTSTATE_EXPRESSION + searchDirectory.BACKGROUND_OUTSTATE_MUTANT);
+            filesJS.insertMutant(selectedFiles[fileSelectedNo], constants.BACKGROUND_OUTSTATE_EXPRESSION, constants.BACKGROUND_OUTSTATE_EXPRESSION + constants.BACKGROUND_OUTSTATE_MUTANT);
             break;
         case 'background_editText':
-            match = filesJS.searchDeclarationInFile(selectedFiles[fileSelectedNo], searchDirectory.BACKGROUND_EDITTEXT_REGEX);
-            finalMutant = match[0] + ' \n ' + match[2] + searchDirectory.BACKGROUND_WIDGET_MUTANT;
+            match = filesJS.searchDeclarationInFile(selectedFiles[fileSelectedNo], constants.BACKGROUND_EDITTEXT_REGEX);
+            finalMutant = match[0] + ' \n ' + match[2] + constants.BACKGROUND_WIDGET_MUTANT;
 
             filesJS.insertMutant(selectedFiles[fileSelectedNo], match[0], finalMutant);
             break;
         case 'background_spinner':
-            match = filesJS.searchDeclarationInFile(selectedFiles[fileSelectedNo], searchDirectory.BACKGROUND_SPINNER_REGEX);
-            finalMutant = match[0] + ' \n ' + match[2] + searchDirectory.BACKGROUND_WIDGET_MUTANT;
+            match = filesJS.searchDeclarationInFile(selectedFiles[fileSelectedNo], constants.BACKGROUND_SPINNER_REGEX);
+            finalMutant = match[0] + ' \n ' + match[2] + constants.BACKGROUND_WIDGET_MUTANT;
 
             filesJS.insertMutant(selectedFiles[fileSelectedNo], match[0], finalMutant);
             break;
         case 'background_onPause':
+            let newFileNumber = fileSelectedNo != 0 ? 0 : 1;
+            let _appFolderNames = selectedFiles[fileSelectedNo].split('\\');
+            let activityName = _appFolderNames[_appFolderNames.length - 1].split('.')[0];
+
+            if (filesJS.searchInFile(selectedFiles[fileSelectedNo], constants.BACKGROUND_ONPAUSE)) {
+                finalMutant = constants.BACKGROUND_SUPER_ONPAUSE + ' \n ' + constants.BACKGROUND_INTENT_CREATOR + activityName + '.class); \n ' + constants.BACKGROUND_START_ACTIVITY;
+                filesJS.insertMutant(selectedFiles[fileSelectedNo], constants.BACKGROUND_SUPER_ONPAUSE, finalMutant);
+            } else {
+                finalMutant = constants.BACKGROUND_ONPAUSE_OVERRIDE + constants.BACKGROUND_INTENT_CREATOR + activityName + '.class); \n ' + constants.BACKGROUND_START_ACTIVITY + '\n } \n }';
+                filesJS.insertMutant(selectedFiles[fileSelectedNo], constants.END_OF_FILE_REGEX, finalMutant);
+            }
             break;
         default:
             break;
@@ -106,7 +118,8 @@ function createMutation(directoryPath, mutant) {
 function mutantValidation(directoryPath, mutant) {
     let selectedFiles = searchDirectory.selectFiles(directoryPath, mutant);
 
-    if (selectedFiles.length > 0) {
+
+    if ((selectedFiles.length > 0 && mutant !== 'background_onPause') || (selectedFiles.length > 1 && mutant === 'background_onPause')) {
         filesJS.copyDirectory(directoryPath, filesJS.ORIGINAL);
         return true;
     } else {

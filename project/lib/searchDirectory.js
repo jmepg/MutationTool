@@ -1,17 +1,6 @@
 const Finder = require('fs-finder');
 const filesJS = require('./files');
-
-
-const BACKGROUND_OUTSTATE_EXPRESSION = 'super.onSaveInstanceState(outState);';
-const BACKGROUND_OUTSTATE_MUTANT = '\n outState.clear();';
-
-const BACKGROUND_EDITTEXT_REGEX = /(EditText)?\s*([A-Za-z\d]+)\s*=\s*\(EditText\)findViewById\(([A-Za-z\d.]+)\);/;
-const BACKGROUND_WIDGET_MUTANT = '.setSaveEnable(false); \n'
-const BACKGROUND_SPINNER_REGEX = /(Spinner)?\s*([A-Za-z\d]+)\s*=\s*\(Spinner\)findViewById\(([A-Za-z\d.]+)\);/;
-
-const BACKGROUND_ACTIVITY_CHECK_REGEX = /(extends)\s[A-Za-z]*(Activity)/;
-const BACKGROUND_ONPAUSE = 'onPause()';
-
+const constants = require('./constants');
 
 
 function selectFiles(dir, mutant) {
@@ -57,7 +46,7 @@ function searchBackgroundValidFiles(file, mutant) {
 
     switch (mutant) {
         case 'background_outState':
-            result = filesJS.searchInFile(file, BACKGROUND_OUTSTATE_EXPRESSION);
+            result = filesJS.searchInFile(file, constants.BACKGROUND_OUTSTATE_EXPRESSION);
             if (result) {
                 return true;
             } else {
@@ -65,7 +54,7 @@ function searchBackgroundValidFiles(file, mutant) {
             }
             break;
         case 'background_editText':
-            result = filesJS.searchInFileRegex(file, BACKGROUND_EDITTEXT_REGEX);
+            result = filesJS.searchInFileRegex(file, constants.BACKGROUND_EDITTEXT_REGEX);
             if (result) {
                 return true;
             } else {
@@ -74,7 +63,7 @@ function searchBackgroundValidFiles(file, mutant) {
             break;
 
         case 'background_spinner':
-            result = filesJS.searchInFileRegex(file, BACKGROUND_SPINNER_REGEX);
+            result = filesJS.searchInFileRegex(file, constants.BACKGROUND_SPINNER_REGEX);
             if (result) {
                 return true;
             } else {
@@ -82,7 +71,7 @@ function searchBackgroundValidFiles(file, mutant) {
             }
             break;
         case 'background_onPause':
-            result = filesJS.searchInFileRegex(file, BACKGROUND_ACTIVITY_CHECK_REGEX);
+            result = filesJS.searchInFileRegex(file, constants.BACKGROUND_ACTIVITY_CHECK_REGEX);
             if (result) {
                 return true;
             } else {
@@ -109,12 +98,6 @@ function isPathValid(path) {
 
 };
 
-
-module.exports.BACKGROUND_OUTSTATE_EXPRESSION = BACKGROUND_OUTSTATE_EXPRESSION;
-module.exports.BACKGROUND_OUTSTATE_MUTANT = BACKGROUND_OUTSTATE_MUTANT;
-module.exports.BACKGROUND_EDITTEXT_REGEX = BACKGROUND_EDITTEXT_REGEX;
-module.exports.BACKGROUND_WIDGET_MUTANT = BACKGROUND_WIDGET_MUTANT;
-module.exports.BACKGROUND_SPINNER_REGEX = BACKGROUND_SPINNER_REGEX;
 
 module.exports.searchDirectory = searchDirectory;
 module.exports.selectFiles = selectFiles;

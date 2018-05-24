@@ -22,13 +22,13 @@ function directoryExists(filePath) {
 }
 
 
-function copyDirectory(source, mutantNo) {
+function copyDirectory(directoryPath, mutantNo) {
 
     if (mutantNo === ORIGINAL) mutantNo = 'original';
     else mutantNo = 'mutant' + mutantNo;
 
 
-    let _appFolderNames = source.split('\\');
+    let _appFolderNames = directoryPath.split('\\');
     let appFolderName = _appFolderNames[_appFolderNames.length - 4];
 
 
@@ -46,13 +46,13 @@ function copyDirectory(source, mutantNo) {
     }
 
 
-    fs.copySync(source, destination);
+    fs.copySync(directoryPath, destination);
 }
 
 function insertMutant(file, expression, mutant) {
 
     const data = fs.readFileSync(file).toString();
-    const result = data.replace(expression.toString(), mutant);
+    const result = data.replace(expression, mutant);
 
     fs.writeFileSync(file, result);
 
@@ -86,6 +86,9 @@ function searchDeclarationInFile(file, regex) {
     }
     return false;
 }
+
+
+
 
 module.exports.ORIGINAL = ORIGINAL;
 
