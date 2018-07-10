@@ -70,6 +70,14 @@ function searchBackgroundValidFiles(file, mutant) {
                 return false;
             }
             break;
+        case 'background_checkbox':
+            result = filesJS.searchInFileRegex(file, constants.BACKGROUND_CHECKBOX_REGEX);
+            if (result) {
+                return true;
+            } else {
+                return false;
+            }
+            break;
         case 'background_onPause':
             result = filesJS.searchInFileRegex(file, constants.BACKGROUND_ACTIVITY_CHECK_REGEX);
             if (result) {
@@ -104,4 +112,7 @@ module.exports.selectFiles = selectFiles;
 module.exports.findAllFiles = findAllFiles;
 module.exports.isPathValid = isPathValid;
 
+// D:\Estrada\MIEIC\Tese\Apps\uCrop\sample\src\main
 // D:\Estrada\MIEIC\Tese\Apps\and-bible\and-bible\app\src\main
+// D:\Estrada\MIEIC\Tese\Apps\android-advancedrecyclerview\example\src\main
+// D:\Estrada\MIEIC\Tese\Apps\WiFi-Automatic\src\main

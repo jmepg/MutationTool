@@ -32,9 +32,9 @@ function copyDirectory(directoryPath, mutantNo) {
     let appFolderName = _appFolderNames[_appFolderNames.length - 4];
 
 
-    let _destination = 'D:\\Estrada\\MIEIC\\Tese\\MutationTool\\project\\output\\' + appFolderName;
+    let _destination = '..\\project\\output\\' + appFolderName;
 
-    let destination = 'D:\\Estrada\\MIEIC\\Tese\\MutationTool\\project\\output\\' + appFolderName + '\\' + mutantNo;
+    let destination = '..\\project\\output\\' + appFolderName + '\\' + mutantNo;
 
 
     if (!fs.existsSync(_destination)) {

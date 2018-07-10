@@ -8,49 +8,73 @@ var mutantNo = 0;
 var fileSelectedNo = 0;
 
 function logic(directoryPath) {
+    let num = 0;
 
     if (!searchDirectory.isPathValid(directoryPath)) {
         console.log("Invalid path! The app folder must be inside the path of the directory given!")
         return -1;
     }
-
-    if (mutantValidation(directoryPath, 'background_outState')) {
-        console.log("\nbackground_outState mutants");
-        while (true) {
-            if (!createMutation(directoryPath, 'background_outState'))
-                break;
-        }
-    }
-
+    /*
+            if (mutantValidation(directoryPath, 'background_outState')) {
+                console.log("\nbackground_outState mutants");
+                while (true) {
+                    num++;
+                    if (!createMutation(directoryPath, 'background_outState'))
+                        break;
+                }
+                console.log(num);
+                num = 0;
+            }
+    */
     if (mutantValidation(directoryPath, 'background_editText')) {
         console.log("\nbackground_editText mutants");
 
         while (true) {
+            num++;
             if (!createMutation(directoryPath, 'background_editText'))
                 break;
         }
+        console.log(num);
+        num = 0;
     }
 
     if (mutantValidation(directoryPath, 'background_spinner')) {
         console.log("\nbackground_spinner mutants");
 
         while (true) {
+            num++;
             if (!createMutation(directoryPath, 'background_spinner'))
                 break;
         }
+        console.log(num);
+        num = 0;
     }
 
-
-    if (mutantValidation(directoryPath, 'background_onPause')) {
-        console.log("\nbackground_onPause mutants");
+    if (mutantValidation(directoryPath, 'background_checkbox')) {
+        console.log("\background_checkbox mutants");
 
         while (true) {
-            if (!createMutation(directoryPath, 'background_onPause'))
+            num++;
+            if (!createMutation(directoryPath, 'background_checkbox'))
                 break;
         }
+        console.log(num);
+        num = 0;
     }
+    /*
+        if (mutantValidation(directoryPath, 'background_onPause')) {
+            console.log("\nbackground_onPause mutants");
 
+            while (true) {
+                num++;
+                if (!createMutation(directoryPath, 'background_onPause'))
+                    break;
+            }
+            console.log(num);
+            num = 0;
+        }
 
+    */
 }
 
 function createMutation(directoryPath, mutant) {
@@ -61,7 +85,7 @@ function createMutation(directoryPath, mutant) {
     let appFolderName = _appFolderNames[_appFolderNames.length - 4];
 
 
-    let newDirectory = 'D:\\Estrada\\MIEIC\\Tese\\MutationTool\\project\\output\\' + appFolderName + '\\mutant' + mutantNo;
+    let newDirectory = '..\\project\\output\\' + appFolderName + '\\mutant' + mutantNo;
 
     let selectedFiles = searchDirectory.selectFiles(newDirectory, mutant);
 
@@ -85,6 +109,12 @@ function createMutation(directoryPath, mutant) {
         case 'background_spinner':
             match = filesJS.searchDeclarationInFile(selectedFiles[fileSelectedNo], constants.BACKGROUND_SPINNER_REGEX);
             finalMutant = match[0] + ' \n ' + match[2] + constants.BACKGROUND_WIDGET_MUTANT;
+
+            filesJS.insertMutant(selectedFiles[fileSelectedNo], match[0], finalMutant);
+            break;
+        case 'background_checkbox':
+            match = filesJS.searchDeclarationInFile(selectedFiles[fileSelectedNo], constants.BACKGROUND_CHECKBOX_REGEX);
+            finalMutant = match[0] + ' \n ' + match[2] + constants.BACKGROUND_CHECKBOX_MUTANT;
 
             filesJS.insertMutant(selectedFiles[fileSelectedNo], match[0], finalMutant);
             break;
