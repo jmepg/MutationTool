@@ -111,8 +111,3 @@ module.exports.searchDirectory = searchDirectory;
 module.exports.selectFiles = selectFiles;
 module.exports.findAllFiles = findAllFiles;
 module.exports.isPathValid = isPathValid;
-
-// D:\Estrada\MIEIC\Tese\Apps\uCrop\sample\src\main
-// D:\Estrada\MIEIC\Tese\Apps\and-bible\and-bible\app\src\main
-// D:\Estrada\MIEIC\Tese\Apps\android-advancedrecyclerview\example\src\main
-// D:\Estrada\MIEIC\Tese\Apps\WiFi-Automatic\src\main

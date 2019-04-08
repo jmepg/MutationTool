@@ -14,18 +14,18 @@ function logic(directoryPath) {
         console.log("Invalid path! The app folder must be inside the path of the directory given!")
         return -1;
     }
-    /*
-            if (mutantValidation(directoryPath, 'background_outState')) {
-                console.log("\nbackground_outState mutants");
-                while (true) {
-                    num++;
-                    if (!createMutation(directoryPath, 'background_outState'))
-                        break;
-                }
-                console.log(num);
-                num = 0;
-            }
-    */
+
+    if (mutantValidation(directoryPath, 'background_outState')) {
+        console.log("\nbackground_outState mutants");
+        while (true) {
+            num++;
+            if (!createMutation(directoryPath, 'background_outState'))
+                break;
+        }
+        console.log(num);
+        num = 0;
+    }
+
     if (mutantValidation(directoryPath, 'background_editText')) {
         console.log("\nbackground_editText mutants");
 
@@ -61,20 +61,20 @@ function logic(directoryPath) {
         console.log(num);
         num = 0;
     }
-    /*
-        if (mutantValidation(directoryPath, 'background_onPause')) {
-            console.log("\nbackground_onPause mutants");
 
-            while (true) {
-                num++;
-                if (!createMutation(directoryPath, 'background_onPause'))
-                    break;
-            }
-            console.log(num);
-            num = 0;
+    if (mutantValidation(directoryPath, 'background_onPause')) {
+        console.log("\nbackground_onPause mutants");
+
+        while (true) {
+            num++;
+            if (!createMutation(directoryPath, 'background_onPause'))
+                break;
         }
+        console.log(num);
+        num = 0;
+    }
 
-    */
+
 }
 
 function createMutation(directoryPath, mutant) {
